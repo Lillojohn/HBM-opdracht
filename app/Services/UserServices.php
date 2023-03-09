@@ -10,6 +10,9 @@ use Illuminate\Support\Str;
 class UserServices
 {
 
+    public function __construct(private UserVerificationService $verificationService){
+    }
+
     public function createUser(array $userData): ?User
     {
         // Check if there is an account already made with the email
@@ -22,7 +25,7 @@ class UserServices
 
         $user = User::create($userData);
 
-        $this->sendVerificationEmail($user);
+        $this->verificationService->sendVerificationEmail($user);
 
         return $user;
     }
@@ -30,15 +33,5 @@ class UserServices
     private function checkIfEmailIsAlreadyInUse(string $email): bool
     {
         return !! User::where("email", $email)->first();
-    }
-
-    private function sendVerificationEmail(User $user){
-
-        dd($user);
-        $verificationLink = url("/user/verification/{$user->id}");
-
-        dd($verificationLink);
-
-        Mail::to($user->email)->send(new VerificationMail($verificationLink));
     }
 }

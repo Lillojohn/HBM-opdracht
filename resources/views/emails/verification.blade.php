@@ -8,7 +8,8 @@
 </head>
 <body class="antialiased">
 <div>
-    <p>Verificatie link voor het account: {{ $verificationLink }}</p>
+    <p>Verificatie link voor het account:</p>
+    <a href="{{ $verificationLink }}">Bevestig uw email</a>
 </div>
 </body>
 </html>
