@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/user', [UserController::class, 'createUser'])->name('createUser');;
+Route::post('/user', [UserController::class, 'createUser'])->name('createUser');
 
 Route::post('/user/login', [UserController::class, 'login'])->name('login');
 

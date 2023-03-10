@@ -15,25 +15,21 @@ class UserLoginService
     }
 
     // This function is used to log in a user.
-    public function login(array $userData): ?string
+    public function login(array $userData): string|User
     {
         $user = User::where("email", $userData['email'])->first();
-
-        // Check if the email is verified.
-        if($user->email_verified_at == null){
-            return "Email is nog niet bevestigd.";
-        }
 
         // Check if the user exists and if the password is correct.
         if (!$this->checkLoginCredentials($user, $userData)) {
             return "Email of wachtwoord is incorrect.";
         }
 
-        if(!$this->loginTokenService->createTokenForUser($user) instanceof LoginToken){
-            return "Er is iets fout gegaan.";
+        // Check if the email is verified.
+        if(!$user->email_verified_at){
+            return "Email is nog niet bevestigd.";
         }
 
-        return "Succesvol ingelogd.";
+        return $user;
     }
 
     private function checkLoginCredentials(?User $user, array $userData): ?bool

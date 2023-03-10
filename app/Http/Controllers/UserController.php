@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Services\LoginTokenService;
 use App\Services\UserLoginService;
 use App\Services\UserServices;
 use App\Services\UserVerificationService;
@@ -25,7 +27,8 @@ class UserController extends BaseController
     public function __construct(
         private UserServices $userServices,
         private UserVerificationService $userVerificationService,
-        private UserLoginService $userLoginService
+        private UserLoginService $userLoginService,
+        private LoginTokenService $loginTokenService
     )
     {
     }
@@ -60,11 +63,15 @@ class UserController extends BaseController
 
         // Succes message
         return response()->json([
-            'bericht' => "Account geregistreerd voor $user->email"
+            'bericht' => "Account geregistreerd voor $user->email. Klik op de link in de email om je account te bevestigen."
         ]);
     }
 
-    public function login(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function login(Request $request): JsonResponse
     {
         // Validation from the POST data
         $validator = Validator::make($request->all(), [
@@ -77,26 +84,32 @@ class UserController extends BaseController
             return response()->json($validator->messages(), Response::HTTP_BAD_REQUEST);
         }
 
+        // Login the User
         $user = $this->userLoginService->login($validator->getData());
 
-        if(!$user){
+        // Message that the user couldn't log in.
+        if(!$user instanceof User){
+            $message = $user;
             return response()->json([
-                'bericht' => "Gebruiker is niet gevonden"
+                'bericht' => $message
             ], Response::HTTP_CONFLICT);
         }
 
+        // Create a login token for the user.
+        $loginToken = $this->loginTokenService->createTokenForUser($user);
 
-        // Succes message
+        // Success message and set the token as a cookie
         return response()->json([
-            'bericht' => "Succesvol ingelogd"
-        ]);
+            'bericht' => "Succesvol ingelogd",
+            'link' => route('tasks')
+        ])->withCookie(cookie('token', $loginToken->token, 1));
     }
 
     /**
-     * @param Request $request
+     * @param string $id
      * @return JsonResponse
      */
-    public function verifyUser(string $id)
+    public function verifyUser(string $id): JsonResponse
     {
         $validator = Validator::make(["id" => $id], [
             'id' => 'required|max:255',
@@ -107,11 +120,7 @@ class UserController extends BaseController
             return response()->json($validator->messages(), Response::HTTP_BAD_REQUEST);
         }
 
-        // Verify the account of the User
-        $message = $this->userVerificationService->verifyUserById($id);
-
-        return response()->json([
-            'bericht' => $message
-        ]);
+        // Verify the account of the User and return a message
+        return $this->userVerificationService->verifyUserById($id);
     }
 }
