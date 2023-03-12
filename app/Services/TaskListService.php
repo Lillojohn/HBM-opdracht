@@ -12,9 +12,9 @@ class TaskListService
      * @param User $user
      * @return Collection|null
      */
-    public function getTaskList(User $user) : ?Collection
+    public function getTaskList(User $user): ?Collection
     {
-        return TaskList::where("user_id", $user->id)->get();
+        return TaskList::where("user_id", $user->id)->with('tasks')->get();
     }
 
     /**
@@ -23,7 +23,7 @@ class TaskListService
      * @param string $description
      * @return TaskList|null
      */
-    public function createTaskList(User $user, string $name, string $description) : ?TaskList
+    public function createTaskList(User $user, string $name, string $description): ?TaskList
     {
         $taskList = new TaskList();
         $taskList->name = $name;

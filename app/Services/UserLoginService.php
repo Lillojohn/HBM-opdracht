@@ -10,7 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 class UserLoginService
 {
 
-    // This function is used to log in a user.
+
+    /**
+     * @param array<string, string> $userData
+     * @return string|User
+     *
+     * This function is used to log in a user.
+     */
     public function login(array $userData): string|User
     {
         $user = User::where("email", $userData['email'])->first();
@@ -30,8 +36,10 @@ class UserLoginService
 
     /**
      * @param User|null $user
-     * @param array $userData
+     * @param array<string, string> $userData
      * @return bool|null
+     *
+     * This function is used to check if the user exists and if the password is correct.
      */
     private function checkLoginCredentials(?User $user, array $userData): ?bool
     {

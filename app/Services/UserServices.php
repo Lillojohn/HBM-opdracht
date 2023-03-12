@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use App\Mail\VerificationMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class UserServices
@@ -15,8 +13,10 @@ class UserServices
     }
 
     /**
-     * @param array $userData
+     * @param array<string, string> $userData
      * @return User|null
+     *
+     * This function is used to create a user.
      */
     public function createUser(array $userData): ?User
     {
@@ -43,6 +43,8 @@ class UserServices
     /**
      * @param string $email
      * @return bool
+     *
+     * This function is used to check if the email is already in use.
      */
     private function checkIfEmailIsAlreadyInUse(string $email): bool
     {

@@ -8,7 +8,7 @@ use App\Models\User;
 class TaskService
 {
     /**
-     * @param array $taskData
+     * @param array<string, mixed> $taskData
      * @param User $user
      * @return void
      */
@@ -22,6 +22,11 @@ class TaskService
         $task->save();
     }
 
+    /**
+     * @param string $id
+     * @param User $user
+     * @return Task|null
+     */
     public function getTask(string $id, User $user): ?Task
     {
         return Task::where([
@@ -30,6 +35,12 @@ class TaskService
         ])->first();
     }
 
+    /**
+     * @param array<string, mixed> $taskData
+     * @param User $user
+     * @return void
+     *
+     */
     public function updateTask(array $taskData, User $user): void
     {
         $task = Task::where([

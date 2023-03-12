@@ -20,7 +20,7 @@
             @csrf
             <div class="mb-6">
                 <label class="block text-grey-darker text-sm font-bold mb-2" for="name">
-                    Email
+                    Naam
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email"
                        type="text" name="name" placeholder="Name">

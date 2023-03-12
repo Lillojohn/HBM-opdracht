@@ -7,6 +7,7 @@ use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController
@@ -15,7 +16,8 @@ class TaskController
     {
     }
 
-    public function createTask(Request $request){
+    public function createTask(Request $request): Response
+    {
         $validator =  Validator::make($request->all(), [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
@@ -29,6 +31,12 @@ class TaskController
 
         // Get the user
         $token = Cookie::get('token');
+        if(!is_string($token) || $token === ""){
+            return response()->json([
+                "message" => "Token is not a string or not found."
+            ], 400);
+        }
+
         $user = $this->authorizationservice->authenticateUserByToken($token);
 
         // Redirect to the login page if the user is not logged in
@@ -43,7 +51,8 @@ class TaskController
         return back(Response::HTTP_CREATED)->with('status', 'Taak gemaakt!');
     }
 
-    public function getTask(string $id){
+    public function getTask(string $id): Response
+    {
         $token = Cookie::get('token');
         $user = $this->authorizationservice->authenticateUserByToken($token);
 
@@ -62,7 +71,8 @@ class TaskController
         ]);
     }
 
-    public function searchTasks(Request $request){
+    public function searchTasks(Request $request): Response
+    {
         $validator =  Validator::make($request->all(), [
             'search' => 'required|max:255',
         ]);
@@ -78,7 +88,8 @@ class TaskController
         ]);
     }
 
-    public function updatePage(string $id){
+    public function updatePage(string $id): Response|View
+    {
         $token = Cookie::get('token');
         $user = $this->authorizationservice->authenticateUserByToken($token);
 
@@ -93,7 +104,8 @@ class TaskController
         ]);
     }
 
-    public function updateTask(Request $request){
+    public function updateTask(Request $request): Response
+    {
         $validator =  Validator::make($request->all(), [
             'id' => 'required|integer',
             'name' => 'required|max:255',
@@ -121,7 +133,8 @@ class TaskController
         return redirect()->route('tasks')->with('status', 'Taak aangepast!');
     }
 
-    public function deleteTask(Request $request){
+    public function deleteTask(Request $request): Response
+    {
         $validator =  Validator::make($request->all(), [
             'id' => 'required|integer',
         ]);
