@@ -17,6 +17,7 @@
     <h1 class="text-xl">Registratie</h1>
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
         <form action="{{ route('createUser') }}" method="POST">
+            @csrf
             <div class="mb-6">
                 <label class="block text-grey-darker text-sm font-bold mb-2" for="name">
                     Email
@@ -44,7 +45,7 @@
         </form>
     </div>
     <div>
-        <h2>Al geregistreerd? Klop op de <a class="font-bold" href="{{route('welcome')}}">link om in te loggen.</a></h2>
+        <h2>Al geregistreerd? Klop op de <a class="font-bold" href="{{route('login')}}">link om in te loggen.</a></h2>
     </div>
 
 </div>

@@ -10,10 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 class UserLoginService
 {
 
-    public function __construct(private LoginTokenService $loginTokenService)
-    {
-    }
-
     // This function is used to log in a user.
     public function login(array $userData): string|User
     {
@@ -32,6 +28,11 @@ class UserLoginService
         return $user;
     }
 
+    /**
+     * @param User|null $user
+     * @param array $userData
+     * @return bool|null
+     */
     private function checkLoginCredentials(?User $user, array $userData): ?bool
     {
         // Check if the user exists

@@ -37,7 +37,7 @@ class UserVerificationService
         // Message that the user's email is successfully verified.
         return response()->json([
             'bericht' => "Email is succesvol bevestigd. Klik op de link om in te loggen.",
-            'link' => route('welcome')
+            'link' => route('login')
         ]);
     }
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Services\LoginTokenService;
+use App\Services\AuthorizationService;
 use App\Services\UserLoginService;
 use App\Services\UserServices;
 use App\Services\UserVerificationService;
@@ -28,7 +28,7 @@ class UserController extends BaseController
         private UserServices $userServices,
         private UserVerificationService $userVerificationService,
         private UserLoginService $userLoginService,
-        private LoginTokenService $loginTokenService
+        private AuthorizationService $authorizationService
     )
     {
     }
@@ -96,13 +96,15 @@ class UserController extends BaseController
         }
 
         // Create a login token for the user.
-        $loginToken = $this->loginTokenService->createTokenForUser($user);
+        $loginToken = $this->authorizationService->createTokenForUser($user);
+
 
         // Success message and set the token as a cookie
         return response()->json([
             'bericht' => "Succesvol ingelogd",
+            'token' => $loginToken->token,
             'link' => route('tasks')
-        ])->withCookie(cookie('token', $loginToken->token, 1));
+        ])->withCookie(cookie('token', $loginToken->token, 60));
     }
 
     /**

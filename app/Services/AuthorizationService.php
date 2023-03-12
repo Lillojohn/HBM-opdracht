@@ -6,8 +6,10 @@ use App\Models\LoginToken;
 use App\Models\User;
 use Illuminate\Support\Str;
 
-class LoginTokenService
+class AuthorizationService
 {
+    const DIFF_IN_MINUTES = 60;
+
     /**
      * @param User $user
      * @return LoginToken
@@ -29,6 +31,27 @@ class LoginTokenService
             return null;
         }
 
-        return $loginToken->user;
+        if($this->deleteExpiredToken($loginToken)){
+            return null;
+        }
+
+        $user = User::where("id", $loginToken->user_id)->first();
+
+        if($user === null){
+            $loginToken->delete();
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function deleteExpiredToken(LoginToken $token): bool
+    {
+        if ($token->created_at->diffInMinutes(now()) > self::DIFF_IN_MINUTES) {
+            $token->delete();
+            return true;
+        }
+
+        return false;
     }
 }

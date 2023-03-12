@@ -17,6 +17,7 @@
     <h1 class="text-xl">Login om uw takenlijst te zien.</h1>
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
         <form action="{{ route('login') }}" method="POST">
+            @csrf
             <div class="mb-4">
                 <label class="block text-grey-darker text-sm font-bold mb-2" for="email">
                     Email
