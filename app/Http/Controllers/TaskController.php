@@ -40,7 +40,7 @@ class TaskController
         $this->taskService->createTask($validator->getData(), $user);
 
         // Redirect back to the previous page
-        return back()->with('status', 'Taak gemaakt!');
+        return back(Response::HTTP_CREATED)->with('status', 'Taak gemaakt!');
     }
 
     public function getTask(string $id){

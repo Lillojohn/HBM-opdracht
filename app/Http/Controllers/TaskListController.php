@@ -14,8 +14,6 @@ class TaskListController
 
     public function taskListPage(string $search = null)
     {
-
-
         $token = Cookie::get('token');
         $user = $this->authorizationservice->authenticateUserByToken($token);
 

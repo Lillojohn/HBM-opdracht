@@ -64,7 +64,7 @@ class UserController extends BaseController
         // Succes message
         return response()->json([
             'bericht' => "Account geregistreerd voor $user->email. Klik op de link in de email om je account te bevestigen."
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**

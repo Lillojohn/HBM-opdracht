@@ -30,7 +30,6 @@ Route::prefix('tasklist')->group(function () {
 
 
 Route::prefix('task')->group(function () {
-    Route::get('/', [TaskController::class, 'getTasks'])->name('getTasks');
     Route::post('/', [TaskController::class, 'createTask'])->name('createTask');
     Route::get('/{id}', [TaskController::class, 'getTask'])->name('getTask');
     Route::post('/update', [TaskController::class, 'updateTask'])->name('updateTask');
