@@ -87,7 +87,16 @@ Voor de mail functionaliteit is er gebruik gemaakt van Mailtrap. De mailtrap con
 ------------------------------------------------------------------------------------------
 ## Design 
 
+De applicate is gebouwd met de gedachte dat het draait op een serverless omgeving van vercel. 
+Deze omgeving is te vinden op https://hbm-opdracht.vercel.app/.
 
+De kan applicatie kan ook lokaal gedraaid worden met  het commando ```php artisan serve```. 
+Om dit werkend te krijgen moeten de database en mail configuratie worden aangepast in het .env bestand.
+
+De applicatie werkt vanuit de browser, maar ook via de API. De API is te benaderen via de endpoints beschreven in de API sectie.
+
+Voor de authorizatie is gekozen om te werken met een tijdelijke cookie, die gelinkt is aan een sessie token. 
+Deze token wordt opgeslagen in de database. De token wordt gebruikt om de gebruiker te identificeren.
 
 ------------------------------------------------------------------------------------------
 
