@@ -130,7 +130,7 @@ class TaskController
         $this->taskService->updateTask($validator->getData(), $user);
 
         // Redirect back to the previous page
-        return redirect()->route('tasks')->with('status', 'Taak aangepast!');
+        return redirect()->route('tasks')->with('status', 'Taak aangepast!')->send();;
     }
 
     public function deleteTask(Request $request): Response
@@ -157,6 +157,6 @@ class TaskController
         $this->taskService->deleteTask($validator->getData()['id'], $user);
 
         // Redirect back to the previous page
-        return back()->with('status', 'Taak verwijderd!');
+        return back()->with('status', 'Taak verwijderd!')->send();
     }
 }

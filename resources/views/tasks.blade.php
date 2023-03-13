@@ -15,12 +15,12 @@
 <body class="antialiased bg-amber-100 h-100">
 <div>
     <h1 class="text-xl">Takenlijst</h1>
-    @if (Session::get('status'))
-        <div class="alert alert-success">
-            {{ Session::get('status') }}
-        </div>
-    @endif
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+        @if (Session::get('status'))
+            <div class="alert font-bold text-xl bg-white-100">
+                {{ Session::get('status') }}
+            </div>
+        @endif
         <!-- Render Task Lists -->
         @foreach ($taskLists as $taskList)
             <div class="bg-red-100 w-64">
